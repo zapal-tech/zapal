@@ -1,0 +1,20 @@
+@import './fonts';
+@import './colors';
+@import './sizes';
+
+html,
+body {
+  font-size: var(--theme-baseline-body-size);
+}
+
+.btn {
+  border-radius: var(--style-radius-s);
+}
+
+.app-header {
+  &__controls-wrapper,
+  &__actions-wrapper,
+  &__actions {
+    overflow: unset;
+  }
+}

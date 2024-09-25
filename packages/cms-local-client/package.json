@@ -1,0 +1,12 @@
+{
+  "name": "@zapal/cms-local-client",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "payload": "catalog:"
+  },
+  "devDependencies": {
+    "@zapal/dx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

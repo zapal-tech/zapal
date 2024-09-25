@@ -1,0 +1,32 @@
+{
+  "name": "zapal",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "env:keys": "pnpx dotenv-vault@latest keys",
+    "env:pull": "pnpx dotenv-vault@latest pull",
+    "env:pull:all": "for env in development staging production; do pnpm env:pull $env; done",
+    "env:push": "pnpx dotenv-vault@latest push",
+    "env:push:all": "for env in development staging production; do pnpm env:push $env; done",
+    "format": "prettier --write \"src/**/*.{ts,js,json,json5,html,svelte,tsx,jsx,gql,graphql,md,css,scss,sass}\"",
+    "lint": "turbo lint",
+    "prepare": "husky",
+    "start": "turbo start"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^19.5.0",
+    "@commitlint/config-pnpm-scopes": "^19.5.0",
+    "@zapal/dx": "catalog:",
+    "eslint": "catalog:",
+    "husky": "catalog:",
+    "prettier": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@9.10.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

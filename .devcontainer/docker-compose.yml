@@ -1,0 +1,74 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    # network_mode: service:db # Connect to the db service, Postgres or MongoDB only
+    # user: root # Uncomment to connect as root instead
+    working_dir: /workspace
+    # Use "forwardPorts" in devcontainer.json to forward an app port locally. "ports" property will not forward from a Codespace.
+
+  # db: # Postgres or MongoDB, use Dockerfile for SQLite setup
+  # image: postgres:16-alpine # Postgres
+  # image: mongo:latest # MongoDB
+  # restart: unless-stopped # Postgres or MongoDB
+  # ports:
+  # - 3011:5432 # Postgres
+  # - 3011:27017 # MongoDB
+  # volumes:
+  # - db-data-postgres:/var/lib/postgresql/data # Postgres
+  # - db-data-mongo:/data/db # MongoDB
+  # environment:
+  #   # Postgres environment variables
+  #   POSTGRES_PASSWORD: zapal
+  #   POSTGRES_USER: zapal
+  #   POSTGRES_DB: zapal
+  #   # MongoDB environment variables
+  #   MONGO_INITDB_ROOT_USERNAME: zapal
+  #   MONGO_INITDB_ROOT_PASSWORD: zapal
+  #   MONGO_INITDB_DATABASE: zapal
+
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - 3021:6379
+
+  # kv: # Redis proxy
+  #   ports:
+  #     - 3022:80
+  #   image: hiett/serverless-redis-http:latest
+  #   environment:
+  #     SRH_MODE: env
+  #     SRH_TOKEN: zapal
+  #     SRH_CONNECTION_STRING: redis://redis:6379
+
+  storage:
+    image: minio/minio:latest
+    restart: unless-stopped
+    ports:
+      - 3030:9001 # Web UI
+      - 3031:9000
+    volumes:
+      - ../.storage:/data
+    environment:
+      MINIO_ROOT_USER: zapal
+      MINIO_ROOT_PASSWORD: zapal!123
+    command: server --console-address ":9001" /data
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mail:
+    image: maildev/maildev:latest
+    restart: unless-stopped
+    ports:
+      - 3040:1080 # Web UI
+      - 3041:1025
+# volumes:
+# db-data-postgres:
+# db-data-mongo:

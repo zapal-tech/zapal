@@ -1,0 +1,51 @@
+{
+  "name": "@zapal/cms",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "dev": "pnpm env:load-local-root && next dev -p 3001",
+    "env:load-local-root": "node ./scripts/load-local-root-env.js",
+    "format": "prettier --write .",
+    "generate:types": "payload generate:types",
+    "lint": "pnpm lint:types && pnpm lint:next",
+    "lint:next": "next lint",
+    "lint:types": "tsc --noemit",
+    "payload": "NODE_OPTIONS=--no-deprecation payload",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@payloadcms/db-sqlite": "catalog:",
+    "@payloadcms/next": "catalog:",
+    "@payloadcms/plugin-nested-docs": "catalog:",
+    "@payloadcms/plugin-redirects": "catalog:",
+    "@payloadcms/plugin-seo": "catalog:",
+    "@payloadcms/richtext-lexical": "catalog:",
+    "@payloadcms/storage-s3": "catalog:",
+    "@payloadcms/translations": "catalog:",
+    "@payloadcms/ui": "catalog:",
+    "@zapal/payload-email-sendgrid": "catalog:",
+    "@zapal/shared": "workspace:*",
+    "next": "catalog:",
+    "payload": "catalog:",
+    "qs-esm": "^7.0.2",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sharp": "catalog:"
+  },
+  "devDependencies": {
+    "@payloadcms/email-nodemailer": "catalog:",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@zapal/dx": "catalog:",
+    "dotenv": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+  }
+}

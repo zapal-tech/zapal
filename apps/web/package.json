@@ -1,0 +1,37 @@
+{
+  "name": "@zapal/website",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "dev": "vite dev --port 3000 --host",
+    "format": "prettier --write .",
+    "lint": "prettier --check . && eslint .",
+    "preview": "vite preview",
+    "test": "npm run test:integration && npm run test:unit",
+    "test:integration": "playwright test",
+    "test:unit": "vitest"
+  },
+  "dependencies": {
+    "@inlang/paraglide-sveltekit": "0.11.0"
+  },
+  "devDependencies": {
+    "@inlang/paraglide-js": "1.11.2",
+    "@playwright/test": "catalog:",
+    "@sveltejs/adapter-auto": "catalog:",
+    "@sveltejs/kit": "catalog:",
+    "@sveltejs/vite-plugin-svelte": "catalog:",
+    "@zapal/cms-local-client": "workspace:*",
+    "@zapal/dx": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "svelte": "catalog:",
+    "svelte-check": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}

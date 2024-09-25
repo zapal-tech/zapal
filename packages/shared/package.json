@@ -1,0 +1,11 @@
+{
+  "name": "@zapal/shared",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {},
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@zapal/dx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "@zapal/dx/typescript/next",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@cms/*": ["src/*"],
+      "@payload-config": ["payload.config.ts"]
+    }
+  },
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,35 @@
+@font-face {
+  font-family: Ronald;
+  src: url('/fonts/Ronald/Ronald-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Ronald;
+  src: url('/fonts/Ronald/Ronald-Medium.woff2') format('woff2');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Ronald;
+  src: url('/fonts/Ronald/Ronald-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Ronald;
+  src: url('/fonts/Ronald/Ronald-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+}
+
+:root {
+  --font-body: Ronald, Tahoma, Geneva, Verdana, 'Segoe UI', Roboto, Arial, sans-serif;
+  // --font-mono: 'SF Mono', Menlo, Consolas, Monaco, monospace;
+}
+
+html,
+body,
+button,
+span {
+  font-family: var(--font-body);
+}
