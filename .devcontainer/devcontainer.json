@@ -3,7 +3,7 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "mkdir /workspace/.db && sqlite3 /workspace/.db/zapal.db ''",
+  "postCreateCommand": "mkdir /workspace/.db && sqlite3 /workspace/.db/zapal.db '' && pnpm i",
   "customizations": {
     "vscode": {
       "extensions": [

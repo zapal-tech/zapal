@@ -1,5 +1,5 @@
 {
-  "extends": ["@zapal/dx/typescript/svelte", "./.svelte-kit/tsconfig.json"],
+  "extends": ["@zapal/dx/typescript/svelte"],
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,

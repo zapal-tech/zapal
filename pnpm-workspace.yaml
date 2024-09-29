@@ -29,6 +29,7 @@ catalog:
   next: 15.0.0-canary.162
   payload: 3.0.0-beta.108
   prettier: ^3
+  qs-esm: ^7.0.2
   react: rc
   'react-dom': rc
   sharp: ^0.33.5

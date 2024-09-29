@@ -29,7 +29,7 @@
     "@zapal/shared": "workspace:*",
     "next": "catalog:",
     "payload": "catalog:",
-    "qs-esm": "^7.0.2",
+    "qs-esm": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "sharp": "catalog:"

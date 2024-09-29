@@ -3,10 +3,12 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "payload": "catalog:"
+    "qs-esm": "catalog:"
   },
   "devDependencies": {
     "@zapal/dx": "catalog:",
+    "payload": "catalog:",
+    "ts-essentials": "^10.0.2",
     "typescript": "catalog:"
   }
 }
