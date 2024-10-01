@@ -1,6 +1,6 @@
 'use client'
 
-import { Collection } from '@cms/types'
+import { Collection } from '@zapal/shared/types'
 import { RelationshipField, useField } from '@payloadcms/ui'
 import { useEffect, useRef } from 'react'
 

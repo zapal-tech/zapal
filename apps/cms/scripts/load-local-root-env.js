@@ -5,7 +5,7 @@ const loadLocalRootEnv = async () => {
   const envConfig = config({ path: ['../../.env', '../../.env.local'] })
 
   if (!envConfig.parsed || Object.keys(envConfig.parsed).length === 0)
-    throw new Error('\n\n\nNo .env.vault found or it is empty\n\n\n')
+    throw new Error('\n\n\nNo .env or .env.local found or it is empty\n\n\n')
 
   try {
     await writeFile(

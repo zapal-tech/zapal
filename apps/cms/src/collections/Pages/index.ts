@@ -26,6 +26,7 @@ export const Pages: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', 'createdAt', 'updatedAt'],
   },
   fields: [
     {

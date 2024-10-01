@@ -3,7 +3,7 @@ import { Payload } from 'payload'
 import { cookies as getCookies, headers as getHeaders } from 'next/headers'
 
 import { TenantFieldComponentClient } from './index.client'
-import { UserRole } from '@cms/types'
+import { UserRole } from '@zapal/shared/types'
 import { tenantCookieName } from '@zapal/shared/cookies'
 
 export const TenantFieldComponent: React.FC<{
@@ -11,8 +11,8 @@ export const TenantFieldComponent: React.FC<{
   payload: Payload
   readOnly: boolean
 }> = async (args) => {
-  const cookies = getCookies()
-  const headers = getHeaders()
+  const cookies = await getCookies()
+  const headers = await getHeaders()
 
   const { user } = await args.payload.auth({ headers })
 

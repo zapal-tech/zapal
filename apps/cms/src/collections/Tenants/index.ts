@@ -1,20 +1,38 @@
-import { Collection } from '@cms/types'
+import { Collection } from '@zapal/shared/types'
 import { CollectionConfig } from 'payload'
 
-import { tenantAdmins } from './access'
+import { tenantAdmins, tenantMembersOrPublicTenant } from './access'
+import { virtualFullName } from './hooks'
+import { rootUsers } from '@cms/access'
 
 export const Tenants: CollectionConfig = {
   slug: Collection.Tenants,
   access: {
-    //   create: rootUsers,
-    read: tenantAdmins,
+    create: rootUsers,
+    read: tenantMembersOrPublicTenant,
     update: tenantAdmins,
-    //   delete: rootUsers,
+    delete: rootUsers,
   },
   admin: {
-    useAsTitle: 'name',
+    useAsTitle: 'fullName',
+    defaultColumns: ['name', 'domain', 'public'],
   },
   fields: [
+    {
+      name: 'fullName',
+      label: {
+        en: 'Full name',
+        uk: 'Повна назва',
+      },
+      virtual: true,
+      type: 'text',
+      hooks: {
+        afterRead: [virtualFullName],
+      },
+      admin: {
+        hidden: true,
+      },
+    },
     {
       name: 'name',
       label: {
@@ -32,6 +50,23 @@ export const Tenants: CollectionConfig = {
       },
       type: 'text',
       required: true,
+      index: true,
+    },
+    {
+      name: 'public',
+      type: 'checkbox',
+      label: {
+        en: 'Public',
+        uk: 'Публічний',
+      },
+      admin: {
+        description: {
+          en: 'If checked, logging in is not required.',
+          uk: 'Якщо відмічено, вхід не потрібен.',
+        },
+        position: 'sidebar',
+      },
+      defaultValue: false,
       index: true,
     },
   ],

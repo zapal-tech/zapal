@@ -5,7 +5,9 @@
     ".pnpm-store/": true,
     ".storage/": true,
     ".db/": true,
-    ".turbo/": true
+    ".turbo/": true,
+    "**/vite.config.ts.timestamp-*.mjs": true,
+    "**/next-env.d.ts": true
   },
   "eslint.workingDirectories": [
     {

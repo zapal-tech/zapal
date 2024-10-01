@@ -9,7 +9,7 @@ import { Popup, PopupList, useAuth, useTranslation } from '@payloadcms/ui'
 import * as qs from 'qs-esm'
 import { useCallback, useEffect, useState } from 'react'
 
-import { UserRole } from '@cms/types'
+import { UserRole } from '@zapal/shared/types'
 import { Tenant, User } from '@cms/types/generated-types'
 
 import { tenantCookieName } from '@zapal/shared/cookies'

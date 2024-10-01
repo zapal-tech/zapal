@@ -4,13 +4,13 @@ import { parseCookies } from 'payload'
 
 import { isRootUser } from '@cms/access'
 import { getTenantAccessIds } from '@cms/utils/getTenantAccessIds'
-import { UserTenantRole } from '@cms/types'
+import { UserTenantRole } from '@zapal/shared/types'
 import { tenantCookieName } from '@zapal/shared/cookies'
 
 export const filterByTenantRead: Access = ({ req: { headers, user } }) => {
   const cookies = parseCookies(headers)
   const isRoot = isRootUser(user)
-  const selectedTenant = cookies.get('payload-tenant')
+  const selectedTenant = Number(cookies.get(tenantCookieName))
 
   const tenantAccessIDs = getTenantAccessIds(user)
 

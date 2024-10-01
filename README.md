@@ -19,7 +19,7 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 To build all apps and packages, run the following command:
 
-```
+```sh
 cd zapal
 pnpm build
 ```
@@ -28,16 +28,18 @@ pnpm build
 
 To develop all apps and packages, run the following command:
 
-```
+```sh
 cd zapal
 sudo sh ./scripts/set-hosts.sh
 ```
 
 Then, open the repository in your favorite code editor using devcontainer, and run the following command:
 
-```
+```sh
 pnpm dev
 ```
 
-Use the following URLs to access the apps: `http://{www,tech,design,blog,estimate}.zapal.local:3000` for the `web` app
-`http://cms.zapal.local:3001` for the `cms` app
+Use the following URLs to access the apps:
+
+- `http://{www,tech,design,blog,estimate}.zapal.local:3000` for the `web` app
+- `http://cms.zapal.local:3001` for the `cms` app

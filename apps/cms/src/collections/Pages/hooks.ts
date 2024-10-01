@@ -3,41 +3,30 @@ import type { FieldHook } from 'payload'
 import { ValidationError } from 'payload'
 
 import { getTenantAccessIds } from '@cms/utils/getTenantAccessIds'
-import { Collection, UserRole } from '@cms/types'
+import { Collection, UserRole } from '@zapal/shared/types'
 
-export const ensureUniqueSlug: FieldHook = async ({ data, originalDoc, req, value }) => {
+export const ensureUniqueSlug: FieldHook = async ({ data, originalDoc, req: { payload, user }, value }) => {
   // if value is unchanged, skip validation
   if (originalDoc.slug === value) return value
 
-  const incomingTenantID = typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant
-  const currentTenantID = typeof originalDoc?.tenant === 'object' ? originalDoc.tenant.id : originalDoc?.tenant
-  const tenantIdToMatch = incomingTenantID || currentTenantID
+  const incomingTenantId = typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant
+  const currentTenantId = typeof originalDoc?.tenant === 'object' ? originalDoc.tenant.id : originalDoc?.tenant
+  const tenantIdToMatch = incomingTenantId || currentTenantId
 
-  const findDuplicatePages = await req.payload.find({
+  const foundDuplicatePages = await payload.find({
     collection: Collection.Pages,
     where: {
-      and: [
-        {
-          tenant: {
-            equals: tenantIdToMatch,
-          },
-        },
-        {
-          slug: {
-            equals: value,
-          },
-        },
-      ],
+      and: [{ tenant: { equals: tenantIdToMatch } }, { slug: { equals: value } }],
     },
   })
 
-  if (findDuplicatePages.docs.length && req.user) {
-    const tenantIds = getTenantAccessIds(req.user)
+  if (foundDuplicatePages.docs.length && user) {
+    const tenantIds = getTenantAccessIds(user)
 
     // if the user is an admin or has access to more than 1 tenant
     // provide a more specific error message
-    if (req.user.roles?.includes(UserRole.Root) || tenantIds.length) {
-      const attemptedTenantChange = await req.payload.findByID({
+    if (user.roles?.includes(UserRole.Root) || tenantIds.length) {
+      const attemptedTenantChange = await payload.findByID({
         id: tenantIdToMatch,
         collection: Collection.Tenants,
       })

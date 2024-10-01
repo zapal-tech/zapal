@@ -13,7 +13,7 @@ import sharp from 'sharp'
 
 // import { Footer, Header, Settings } from '@cms/globals'
 
-import { AdminPanelGroup, Collection, CollectionLabel, Global, UserRole } from '@cms/types'
+import { AdminPanelGroup, Collection, CollectionLabel, Global, UserRole } from '@zapal/shared/types'
 
 import enTranslation from '@cms/locales/en'
 import ukTranslation from '@cms/locales/uk'
@@ -31,6 +31,14 @@ import { cookiesName } from '@zapal/shared/cookies'
 import { Users } from '@cms/collections/Users'
 import { Tenants } from '@cms/collections/Tenants'
 import { Pages } from '@cms/collections/Pages'
+
+if (!process.env.CMS_SECRET) {
+  const envConfig = (await import('dotenv')).config({ path: ['../../.env', '../../.env.local'] })
+
+  Object.entries(envConfig.parsed || {}).map(
+    ([key, value]) => (process.env[key.startsWith('PUBLIC_') ? `NEXT_${key}` : key] = value),
+  )
+}
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

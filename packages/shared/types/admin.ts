@@ -1,6 +1,22 @@
-import { Collection, Global } from '@cms/types'
+import { Collection, Global } from './'
 
-import { Locale } from '@zapal/shared/i18n'
+import { Locale } from '../i18n'
+
+// TS Enum values must be of string or number type
+export const AdminPanelGroup: Record<'General' | 'Media' | 'Content', Record<Locale, string>> = {
+  General: {
+    en: 'General',
+    uk: 'Загальне',
+  },
+  Media: {
+    en: 'Media',
+    uk: 'Медіа',
+  },
+  Content: {
+    en: 'Content',
+    uk: 'Контент',
+  },
+} as const
 
 type CollectionLabel = Record<'singular' | 'plural', Record<Locale, string> | string>
 type GlobalLabel = Record<Locale, string> | string

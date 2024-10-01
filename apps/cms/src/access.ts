@@ -1,5 +1,5 @@
 import { User } from '@cms/types/generated-types'
-import { UserRole } from '@cms/types'
+import { UserRole } from '@zapal/shared/types'
 import { Access, User as AuthUser, FieldAccess } from 'payload'
 
 export const isRootUser = (user?: User | AuthUser | null): boolean => checkUserRoles([UserRole.Root], user)
@@ -12,6 +12,8 @@ export const checkUserRoles = (allRoles: User['roles'] = [], user?: User | AuthU
 
 export const anyone: Access = () => true
 
-export const rootUsers: Access = ({ req: { user } }) => checkUserRoles([UserRole.Root], user)
+export const rootUsers: Access = ({ req: { user } }) => isRootUser(user)
 
-export const rootUserFieldAccess: FieldAccess = ({ req: { user } }) => checkUserRoles([UserRole.Root], user)
+// Fields
+
+export const rootUsersFieldAccess: FieldAccess = ({ req: { user } }) => checkUserRoles([UserRole.Root], user)

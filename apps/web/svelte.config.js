@@ -1,6 +1,12 @@
 import adapter from '@sveltejs/adapter-auto'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -14,6 +20,10 @@ const config = {
     adapter: adapter(),
     env: {
       dir: '../..',
+    },
+    alias: {
+      '@cms-config': path.resolve(__dirname, '../cms/payload.config.ts'),
+      '@cms/*': path.resolve(__dirname, '../cms/src/*'),
     },
   },
 }

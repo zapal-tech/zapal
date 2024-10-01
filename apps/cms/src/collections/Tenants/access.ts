@@ -1,15 +1,32 @@
 import { isRootUser } from '@cms/access'
+import { getTenantAccessIds, getTenantAdminTenantAccessIds } from '@cms/utils/getTenantAccessIds'
 import { Access } from 'payload'
 
 export const tenantAdmins: Access = ({ req: { user } }) => {
+  if (!user) return false
   if (isRootUser(user)) return true
 
+  const tenantIds = getTenantAdminTenantAccessIds(user)
+
+  return { id: { in: tenantIds } }
+}
+
+export const tenantMembers: Access = ({ req: { user } }) => {
+  if (!user) return false
+  if (isRootUser(user)) return true
+
+  const tenantIds = getTenantAccessIds(user)
+
+  return { id: { in: tenantIds } }
+}
+
+export const tenantMembersOrPublicTenant: Access = ({ req: { user } }) => {
+  if (isRootUser(user)) return true
+
+  const tenantIds = getTenantAccessIds(user)
+  const publicConstraint = { public: { equals: true } } as const
+
   return {
-    id: {
-      in:
-        user?.tenants
-          ?.map(({ tenant, roles }) => (roles.includes('admin') ? (typeof tenant === 'string' ? tenant : tenant.id) : null)) // eslint-disable-line function-paren-newline
-          .filter(Boolean) || [],
-    },
+    or: [publicConstraint, { id: { in: tenantIds } }],
   }
 }

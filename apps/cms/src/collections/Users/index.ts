@@ -1,14 +1,14 @@
 import { CollectionConfig } from 'payload'
 
-import { AdminPanelGroup, Collection, CollectionLabel, UserRole, UserTenantRole } from '@cms/types'
+import { AdminPanelGroup, Collection, CollectionLabel, UserRole, UserTenantRole } from '@zapal/shared/types'
 
 import { isNotDev } from '@cms/utils/env'
 
-import { ensureFirstUserIsRoot, recordLastSignedInTenant, signInAfterCreate, virtualFullName } from './hooks'
+import { ensureFirstUserIsRoot, virtualFullName } from './hooks'
 // import { welcomeEmail } from './hooks/welcomeEmail'
 
-import { isRootUserOrTenantAdmin, tenantAdmins, tenantAdminsAndSelf } from './access'
-import { rootUserFieldAccess } from '@cms/access'
+import { createAccess, readAccess, updateAndDeleteAccess } from './access'
+import { rootUsersFieldAccess } from '@cms/access'
 
 export const Users: CollectionConfig = {
   slug: Collection.Users,
@@ -18,7 +18,7 @@ export const Users: CollectionConfig = {
     maxLoginAttempts: 5,
     tokenExpiration: 60 * 60 * 24 * 7,
     cookies: {
-      sameSite: 'Strict',
+      sameSite: 'Lax',
       secure: isNotDev,
       domain: process.env.NEXT_PUBLIC_CMS_COOKIES_DOMAIN,
     },
@@ -29,15 +29,10 @@ export const Users: CollectionConfig = {
     useAsTitle: 'fullName',
   },
   access: {
-    read: tenantAdminsAndSelf,
-    //// create: anyone,
-    update: tenantAdminsAndSelf,
-    delete: tenantAdminsAndSelf,
-    admin: isRootUserOrTenantAdmin,
-  },
-  hooks: {
-    afterChange: [signInAfterCreate],
-    afterLogin: [recordLastSignedInTenant],
+    read: readAccess,
+    create: createAccess,
+    update: updateAndDeleteAccess,
+    delete: updateAndDeleteAccess,
   },
   timestamps: true,
   fields: [
@@ -89,9 +84,9 @@ export const Users: CollectionConfig = {
       hasMany: true,
       required: true,
       access: {
-        create: rootUserFieldAccess,
-        update: rootUserFieldAccess,
-        read: rootUserFieldAccess,
+        create: rootUsersFieldAccess,
+        update: rootUsersFieldAccess,
+        read: rootUsersFieldAccess,
       },
       defaultValue: [UserRole.User],
       options: [
@@ -117,14 +112,10 @@ export const Users: CollectionConfig = {
     {
       name: 'tenants',
       type: 'array',
+      saveToJWT: true,
       label: {
         en: 'Tenants',
         uk: 'Тенанти',
-      },
-      access: {
-        create: tenantAdmins,
-        update: tenantAdmins,
-        read: tenantAdmins,
       },
       fields: [
         {
@@ -136,6 +127,7 @@ export const Users: CollectionConfig = {
           type: 'relationship',
           relationTo: Collection.Tenants,
           required: true,
+          saveToJWT: true,
         },
         {
           name: 'roles',
@@ -146,6 +138,7 @@ export const Users: CollectionConfig = {
           type: 'select',
           hasMany: true,
           required: true,
+          defaultValue: [UserTenantRole.Viewer],
           options: [
             {
               label: {
@@ -161,27 +154,16 @@ export const Users: CollectionConfig = {
               },
               value: UserTenantRole.ContentManager,
             },
+            {
+              label: {
+                en: 'Viewer',
+                uk: 'Глядач',
+              },
+              value: UserTenantRole.Viewer,
+            },
           ],
         },
       ],
-    },
-    {
-      name: 'lastSignedInTenant',
-      label: {
-        en: 'Last signed in Tenant',
-        uk: 'Востаннє увійшов в тенант',
-      },
-      type: 'relationship',
-      relationTo: Collection.Tenants,
-      index: true,
-      access: {
-        create: () => false,
-        read: tenantAdmins,
-        update: rootUserFieldAccess,
-      },
-      admin: {
-        position: 'sidebar',
-      },
     },
   ],
 }

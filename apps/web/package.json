@@ -16,7 +16,10 @@
     "test:unit": "vitest"
   },
   "dependencies": {
-    "@inlang/paraglide-sveltekit": "0.11.0"
+    "@inlang/paraglide-sveltekit": "0.11.0",
+    "@zapal/shared": "workspace:*",
+    "dotenv": "catalog:",
+    "payload": "catalog:"
   },
   "devDependencies": {
     "@inlang/paraglide-js": "1.11.2",
@@ -24,7 +27,6 @@
     "@sveltejs/adapter-auto": "catalog:",
     "@sveltejs/kit": "catalog:",
     "@sveltejs/vite-plugin-svelte": "catalog:",
-    "@zapal/cms-local-client": "workspace:*",
     "@zapal/dx": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",

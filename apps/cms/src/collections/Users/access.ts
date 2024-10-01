@@ -1,110 +1,52 @@
-import { FieldAccess, User as AuthUser, Access, PayloadRequest } from 'payload'
-
-import { Collection, UserRole, UserTenantRole } from '@cms/types'
+import { isRootUser } from '@cms/access'
 import { User } from '@cms/types/generated-types'
-import { checkUserRoles, isRootUser } from '@cms/access'
+import { getTenantAdminTenantAccessIds } from '@cms/utils/getTenantAccessIds'
+import { tenantCookieName } from '@zapal/shared/cookies'
+import { Access, parseCookies } from 'payload'
 
-type UserTenantRoles = NonNullable<Required<User>['tenants']>[0]['roles']
-type UserTenant = NonNullable<Required<User>['tenants']>[0]['tenant']
-
-export const checkTenantRoles = (
-  allRoles: UserTenantRoles = [],
-  user?: User | AuthUser | null,
-  tenant?: UserTenant | null,
-): boolean => {
-  if (!tenant) return false
-
-  const id = typeof tenant === 'object' && tenant ? tenant.id : tenant
-
-  return allRoles.some((role) =>
-    (user as User | null | undefined)?.tenants?.some(({ tenant: userTenant, roles }) => {
-      const tenantId = typeof userTenant === 'object' ? userTenant.id : userTenant
-
-      return tenantId === id && roles?.includes(role)
-    }),
-  )
-}
-
-export const tenantAdmins: FieldAccess<User> = ({ req: { user }, doc }) =>
-  Boolean(
-    checkUserRoles([UserRole.Root], user) ||
-      doc?.tenants?.some(({ tenant }) => {
-        const id = typeof tenant === 'object' && tenant ? tenant.id : tenant
-
-        return checkTenantRoles(['admin'], user, id)
-      }),
-  )
-
-export const tenantAdminsAndSelf: Access<User> = async ({ req: { user } }) => {
+export const createAccess: Access<User> = ({ req: { user }, data }) => {
   if (!user) return false
-
-  const isRoot = isRootUser(user)
-
-  // allow root users through only if they have not scoped their user via `lastSignedInTenant`
-  if (isRoot && !user?.lastSignedInTenant) return true
-
-  // allow users to read themselves and any users within the tenants they are admins of
-  return {
-    id: { equals: user.id },
-    or: [
-      {
-        'tenants.tenant': {
-          in: (
-            (isRoot
-              ? [
-                  typeof user?.lastSignedInTenant === 'object' && user.lastSignedInTenant
-                    ? user.lastSignedInTenant.id
-                    : user?.lastSignedInTenant,
-                ]
-              : user?.tenants?.map(({ tenant, roles }) =>
-                  roles.includes(UserTenantRole.Admin) ? (typeof tenant === 'object' ? tenant.id : tenant) : null,
-                )) || []
-          ).filter(Boolean),
-        },
-      },
-    ],
-  }
-}
-
-export const isRootUserOrTenantAdmin = async ({ req, req: { user, payload } }: { req: PayloadRequest }): Promise<boolean> => {
   if (isRootUser(user)) return true
 
-  const host = req.headers.get('host')
+  const adminTenantIds = getTenantAdminTenantAccessIds(user)
 
-  payload.logger.info(`Finding tenant with host: "${host}"`)
+  if (adminTenantIds.length && data?.tenants?.length)
+    return data.tenants.every(({ tenant }) => adminTenantIds.includes(typeof tenant === 'object' ? tenant.id : tenant))
 
-  // read `req.headers.get('host')`, lookup the tenant by `domain` to ensure it exists, and check if the user is an admin of that tenant
-  const foundTenants = await payload.find({
-    collection: Collection.Tenants,
-    where: {
-      domain: { equals: host },
-    },
-    depth: 0,
-    limit: 1,
-    req,
-  })
+  return false
+}
 
-  // if this tenant does not exist, deny access
-  if (!foundTenants.totalDocs) {
-    payload.logger.info(`No tenant found for "${host}" host, denying access`)
+export const readAccess: Access<User> = ({ req: { user, headers } }) => {
+  if (!user) return false
 
-    return false
+  const cookies = parseCookies(headers)
+  const isRoot = isRootUser(user)
+  const selectedTenant = Number(cookies.get(tenantCookieName))
+
+  const selfAccessConstraint = { id: { equals: user.id } } as const
+
+  if (selectedTenant) {
+    const tenantIds = getTenantAdminTenantAccessIds(user)
+    const hasTenantAccess = tenantIds.some((id) => id === selectedTenant)
+
+    if (isRoot || hasTenantAccess) return { or: [{ 'tenants.tenant': { equals: selectedTenant } }, selfAccessConstraint] }
   }
 
-  payload.logger.info(`Found tenant: "${foundTenants.docs?.[0]?.name}", checking if user is an tenant admin`)
+  if (isRoot) return true
 
-  // finally check if the user is an admin of this tenant
-  const tenantWithUser = user?.tenants?.find(
-    ({ tenant: userTenant }) => (typeof userTenant === 'object' ? userTenant?.id : userTenant) === foundTenants.docs[0]?.id,
-  )
+  const tenantIds = getTenantAdminTenantAccessIds(user)
 
-  if (tenantWithUser?.roles?.some((role) => role === 'admin')) {
-    payload.logger.info(`User is an admin of "${foundTenants.docs[0]?.name}", allowing access`)
+  return { or: [{ 'tenants.tenant': { in: tenantIds } }, selfAccessConstraint] }
+}
 
-    return true
-  }
+export const updateAndDeleteAccess: Access<User> = ({ req: { user }, data }) => {
+  if (!user) return false
+  if (isRootUser(user)) return true
 
-  payload.logger.info(`User is not an admin of "${foundTenants.docs[0]?.name}", denying access`)
+  const adminTenantIds = getTenantAdminTenantAccessIds(user)
+
+  if (adminTenantIds.length && data?.tenants?.length)
+    return data.tenants.every(({ tenant }) => adminTenantIds.includes(typeof tenant === 'object' ? tenant.id : tenant))
 
   return false
 }

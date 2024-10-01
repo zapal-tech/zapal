@@ -1,7 +1,7 @@
 import { Field } from 'payload'
 
 import { isRootUser } from '@cms/access'
-import { Collection } from '@cms/types'
+import { Collection } from '@zapal/shared/types'
 
 import { autofillTenant } from './hooks'
 import { tenantFieldUpdate } from './access'
