@@ -1,10 +1,10 @@
+import { cookies as getCookies, headers as getHeaders } from 'next/headers'
 import { Payload } from 'payload'
 
-import { cookies as getCookies, headers as getHeaders } from 'next/headers'
+import { tenantCookieName } from '@zapal/shared/cookies'
+import { UserRole } from '@zapal/shared/types'
 
 import { TenantFieldComponentClient } from './index.client'
-import { UserRole } from '@zapal/shared/types'
-import { tenantCookieName } from '@zapal/shared/cookies'
 
 export const TenantFieldComponent: React.FC<{
   path: string

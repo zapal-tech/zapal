@@ -1,7 +1,8 @@
 import { GenerateTitle } from '@payloadcms/plugin-seo/types'
-import { appName } from '@zapal/shared/app'
 
+import { appName } from '@zapal/shared/app'
 import { Collection } from '@zapal/shared/types'
+
 import { Page } from '@cms/types/generated-types'
 
 export const generateTitle: GenerateTitle<Page> = ({ doc }) => {

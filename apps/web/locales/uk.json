@@ -1,0 +1,6 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "welcome_tech": "Розробка",
+  "welcome_design": "Дизайн",
+  "welcome_estimate": "Калькулятор"
+}

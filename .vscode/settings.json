@@ -1,11 +1,10 @@
 {
   "files.exclude": {
-    "node_modules/": true,
-    "**/node_modules/": true,
     ".pnpm-store/": true,
     ".storage/": true,
     ".db/": true,
-    ".turbo/": true,
+    "**/node_modules/": true,
+    "**/.turbo/": true,
     "**/vite.config.ts.timestamp-*.mjs": true,
     "**/next-env.d.ts": true
   },
@@ -14,6 +13,6 @@
       "mode": "auto"
     }
   ],
-  "cSpell.words": ["commitlint"],
+  "cSpell.words": ["commitlint", "inlang", "Paraglide"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -1,4 +1,5 @@
 import { UserTenantRole } from '@zapal/shared/types'
+
 import type { User } from '@cms/types/generated-types'
 
 export const getTenantAccessIds = (user: User | null): number[] => {

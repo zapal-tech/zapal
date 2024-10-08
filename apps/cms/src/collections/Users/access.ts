@@ -1,8 +1,10 @@
+import { Access, parseCookies } from 'payload'
+
+import { tenantCookieName } from '@zapal/shared/cookies'
+
 import { isRootUser } from '@cms/access'
 import { User } from '@cms/types/generated-types'
 import { getTenantAdminTenantAccessIds } from '@cms/utils/getTenantAccessIds'
-import { tenantCookieName } from '@zapal/shared/cookies'
-import { Access, parseCookies } from 'payload'
 
 export const createAccess: Access<User> = ({ req: { user }, data }) => {
   if (!user) return false

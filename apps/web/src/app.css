@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+
+@import '../static/fonts/Ronald/font.css';
+
+/* Tailwind setup */
+@theme {
+  /* Breakpoints */
+  --breakpoint-xs: 26rem;
+  --breakpoint-sm: 32rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+  --breakpoint-3xl: 120rem;
+
+  /* Colors */
+  --color-*: initial; /* Reset */
+
+  --color-red: #d10000;
+  --color-orange: #f84c0b;
+
+  --color-white: hsl(0, 0%, 100%);
+  --color-gray-light: hsl(0, 0%, 62.5%);
+  --color-gray: hsl(0, 0%, 50%);
+  --color-gray-dark: hsl(0, 0%, 37.5%);
+  --color-black: hsl(0, 0%, 0%);
+
+  /* Fonts */
+  --font-family-sans: Ronald, Tahoma, Geneva, Verdana, 'Segoe UI', Roboto, Arial, sans-serif;
+  /* --font-family-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif; */
+  /* --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace; */
+
+  /* Blurs */
+  --blur-*: initial; /* Reset */
+
+  --blur-xs: 2px;
+  --blur-sm: 4px;
+  --blur: 8px;
+  --blur-md: 12px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+
+  /* Radius */
+  --radius-*: initial; /* Reset */
+
+  --radius-none: 0;
+  --radius: 0.25rem;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+  --radius-full: 9999px;
+}

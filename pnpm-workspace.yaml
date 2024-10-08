@@ -3,31 +3,37 @@ packages:
   - 'packages/*'
 
 catalog:
-  '@next/env': 3.0.0-canary.174
-  '@payloadcms/db-sqlite': 3.0.0-beta.110
-  '@payloadcms/email-nodemailer': 3.0.0-beta.110
-  '@payloadcms/next': 3.0.0-beta.110
-  '@payloadcms/plugin-nested-docs': 3.0.0-beta.110
-  '@payloadcms/plugin-redirects': 3.0.0-beta.110
-  '@payloadcms/plugin-seo': 3.0.0-beta.110
-  '@payloadcms/richtext-lexical': 3.0.0-beta.110
-  '@payloadcms/storage-s3': 3.0.0-beta.110
-  '@payloadcms/translations': 3.0.0-beta.110
-  '@payloadcms/ui': 3.0.0-beta.110
+  '@next/env': 3.0.0-canary.173
+  '@payloadcms/db-sqlite': 3.0.0-beta.111
+  '@payloadcms/email-nodemailer': 3.0.0-beta.111
+  '@payloadcms/next': 3.0.0-beta.111
+  '@payloadcms/plugin-nested-docs': 3.0.0-beta.111
+  '@payloadcms/plugin-redirects': 3.0.0-beta.111
+  '@payloadcms/plugin-seo': 3.0.0-beta.111
+  '@payloadcms/richtext-lexical': 3.0.0-beta.111
+  '@payloadcms/storage-s3': 3.0.0-beta.111
+  '@payloadcms/translations': 3.0.0-beta.111
+  '@payloadcms/ui': 3.0.0-beta.111
   '@playwright/test': ^1.28.1
   '@sveltejs/adapter-auto': ^3.2.5
   '@sveltejs/kit': ^2.6.1
+  '@sveltejs/package': ^2.3.5
   '@sveltejs/vite-plugin-svelte': 4.0.0-next.7
+  '@tailwindcss/vite': next
   '@turbo/gen': ^2.1.2
+  '@types/cookie': ^0.6.0
   '@types/eslint': ^9.6.1
   '@types/node': ^20.11
-  '@zapal/dx': 1.1.1
+  '@unocss/preset-web-fonts': ^0.63.2
+  '@unocss/reset': ^0.63.2
+  '@unocss/svelte-scoped': ^0.63.2
+  '@zapal/dx': 1.2.0
   '@zapal/payload-email-sendgrid': ^1.0.5
   dotenv: ^16.4.5
   eslint: ^9.10.0
   husky: ^9.1.6
-  next: 15.0.0-canary.174
-  payload: 3.0.0-beta.110
+  next: 15.0.0-canary.173
+  payload: 3.0.0-beta.111
   prettier: ^3
   qs-esm: ^7.0.2
   react: rc
@@ -35,7 +41,9 @@ catalog:
   sharp: ^0.33.5
   svelte: next
   svelte-check: ^4.0.2
+  tailwindcss: next
   turbo: ^2.1.2
-  typescript: ^5.4.5
+  typescript: ^5.6.2
+  unocss: ^0.63.2
   vite: ^5.4.5
   vitest: ^2.1.1

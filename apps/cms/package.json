@@ -4,9 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build",
-    "dev": "pnpm env:load-local-root && next dev -p 3001",
-    "env:load-local-root": "node ./scripts/load-local-root-env.js",
+    "build": "pnpm env:load:remote && next build",
+    "build:local": "pnpm env:load:local && next build",
+    "dev": "pnpm env:load:local && next dev -p 3001",
+    "env:load:local": "node ./scripts/load-local-env.js",
+    "env:load:remote": "node ./scripts/load-remote-env.js",
     "format": "prettier --write .",
     "generate:types": "payload generate:types",
     "lint": "pnpm lint:types && pnpm lint:next",
@@ -32,7 +34,8 @@
     "qs-esm": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "sharp": "catalog:"
+    "sharp": "catalog:",
+    "ua-en-translit": "^3.2.5"
   },
   "devDependencies": {
     "@payloadcms/email-nodemailer": "catalog:",

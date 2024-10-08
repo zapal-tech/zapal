@@ -1,22 +1,34 @@
-import type { FieldHook } from 'payload'
+import { FieldHook, ValidationError } from 'payload'
 
-import { ValidationError } from 'payload'
-
-import { getTenantAccessIds } from '@cms/utils/getTenantAccessIds'
 import { Collection, UserRole } from '@zapal/shared/types'
 
-export const ensureUniqueSlug: FieldHook = async ({ data, originalDoc, req: { payload, user }, value }) => {
-  // if value is unchanged, skip validation
-  if (originalDoc.slug === value) return value
+import { getTenantAccessIds } from '@cms/utils/getTenantAccessIds'
+
+export const ensureUniqueSlug: FieldHook = async ({
+  data,
+  originalDoc,
+  req: {
+    payload,
+    user,
+    i18n: { t },
+  },
+  value,
+}) => {
+  const incomingParentId = typeof data?.parent === 'object' ? data.parent.id : data?.parent
+  const currentParentId = typeof originalDoc?.parent === 'object' ? originalDoc.parent.id : originalDoc?.parent
 
   const incomingTenantId = typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant
   const currentTenantId = typeof originalDoc?.tenant === 'object' ? originalDoc.tenant.id : originalDoc?.tenant
+
+  if (originalDoc.slug === value && incomingParentId === currentParentId && incomingTenantId === currentTenantId) return value
+
   const tenantIdToMatch = incomingTenantId || currentTenantId
+  const parentIdToMatch = (typeof data?.parent === 'object' ? data.parent.id : data?.parent) || null
 
   const foundDuplicatePages = await payload.find({
     collection: Collection.Pages,
     where: {
-      and: [{ tenant: { equals: tenantIdToMatch } }, { slug: { equals: value } }],
+      and: [{ tenant: { equals: tenantIdToMatch } }, { slug: { equals: value } }, { parent: { equals: parentIdToMatch } }],
     },
   })
 
@@ -35,7 +47,11 @@ export const ensureUniqueSlug: FieldHook = async ({ data, originalDoc, req: { pa
         errors: [
           {
             field: 'slug',
-            message: `The "${attemptedTenantChange.name}" tenant already has a page with the slug "${value}". Slugs must be unique per tenant.`,
+            // @ts-expect-error - custom validation error translation
+            message: t('validation:slugWithParent.uniqueWithTenantDetails', {
+              slug: value,
+              tenant: attemptedTenantChange.name,
+            }),
           },
         ],
       })
@@ -45,7 +61,10 @@ export const ensureUniqueSlug: FieldHook = async ({ data, originalDoc, req: { pa
       errors: [
         {
           field: 'slug',
-          message: `A page with the slug ${value} already exists. Slug must be unique per tenant.`,
+          // @ts-expect-error - custom validation error translation
+          message: t('validation:slugWithParent.unique', {
+            slug: value,
+          }),
         },
       ],
     })

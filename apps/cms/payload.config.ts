@@ -1,36 +1,36 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
+// import { formBuilderPlugin } from '@payloadcms/plugin-form-builder';
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { seoPlugin } from '@payloadcms/plugin-seo'
+import { s3Storage } from '@payloadcms/storage-s3'
+import { buildConfig, Config } from 'payload'
 import { en } from 'payload/i18n/en'
 import { uk } from 'payload/i18n/uk'
-// import { formBuilderPlugin } from '@payloadcms/plugin-form-builder';
-// import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
-// import { redirectsPlugin } from '@payloadcms/plugin-redirects'
-// import { seoPlugin } from '@payloadcms/plugin-seo'
-import { s3Storage } from '@payloadcms/storage-s3'
-import { appName } from '@zapal/shared/app'
-import { buildConfig, Config } from 'payload'
 import sharp from 'sharp'
 
-// import { Footer, Header, Settings } from '@cms/globals'
-
+import { appName } from '@zapal/shared/app'
+import { cookiesName } from '@zapal/shared/cookies'
+import { cmsSenderEmail, cmsSenderName } from '@zapal/shared/email'
+import { defaultLocale } from '@zapal/shared/i18n'
 import { AdminPanelGroup, Collection, CollectionLabel, Global, UserRole } from '@zapal/shared/types'
 
+import { OpenGraphImages } from '@cms/collections/OpenGraphImages'
+import { Pages } from '@cms/collections/Pages'
+import { Posts } from '@cms/collections/Posts'
+import { Tenants } from '@cms/collections/Tenants'
+import { Users } from '@cms/collections/Users'
+import { getDefaultEditor } from '@cms/editor'
+import { Home } from '@cms/globals/Home'
+import { cmsLocales } from '@cms/i18n'
 import enTranslation from '@cms/locales/en'
 import ukTranslation from '@cms/locales/uk'
-
-import { cmsLocales } from '@cms/i18n'
-
-import { getDefaultEditor } from '@cms/editor'
+import { Page, Tenant } from '@cms/types/generated-types'
+import { isDev } from '@cms/utils/env'
 import { generateTitle } from '@cms/utils/seo'
 import { generatePublicFileURL } from '@cms/utils/storage'
-
-import { cmsSenderEmail, cmsSenderName } from '@zapal/shared/email'
-import { isDev } from '@cms/utils/env'
-import { defaultLocale } from '@zapal/shared/i18n'
-import { cookiesName } from '@zapal/shared/cookies'
-import { Users } from '@cms/collections/Users'
-import { Tenants } from '@cms/collections/Tenants'
-import { Pages } from '@cms/collections/Pages'
 
 if (!process.env.CMS_SECRET) {
   const envConfig = (await import('dotenv')).config({ path: ['../../.env', '../../.env.local'] })
@@ -63,16 +63,17 @@ const emailAdapter =
         apiKey: process.env.SENDGRID_API_KEY || '',
       })
 
-const dbAdapter = (await import('@payloadcms/db-sqlite')).sqliteAdapter({
+const dbAdapter = sqliteAdapter({
   client: {
     url: process.env.DATABASE_URL || '',
+    authToken: isDev ? undefined : process.env.DATABASE_AUTH_TOKEN,
   },
   // prodMigrations:
   migrationDir: path.resolve(dirname, 'src', 'migrations'),
 })
 
 const payloadConfig: Config = {
-  // serverURL: process.env.NEXT_PUBLIC_SITE_URL || '',
+  serverURL: isDev ? undefined : process.env.NEXT_PUBLIC_CMS_URL || '',
   secret: process.env.CMS_SECRET || '',
   routes: {
     admin: '/',
@@ -96,9 +97,14 @@ const payloadConfig: Config = {
         {
           type: 'image/x-icon',
           rel: 'icon',
-          url: '/favicon.ico',
+          url: '/favicon.svg',
         },
       ],
+      openGraph: {
+        siteName: appName,
+      },
+      description: 'Zapal CMS | Internal CMS for Zapal company websites',
+      keywords: 'Zapal, CMS, Content Management System',
       titleSuffix: ` | ${appName} CMS`,
     },
     autoLogin: isDev
@@ -111,16 +117,16 @@ const payloadConfig: Config = {
   },
   collections: [
     //   Media,
-    //   OpenGraphImages,
-    //   Categories,
-    Pages,
+    OpenGraphImages,
     Users,
     Tenants,
+    Pages,
+    Posts,
   ],
-  // globals: [Home, Header, Banner, Footer, Settings],
+  globals: [Home],
   cookiePrefix: cookiesName,
-  cors: [process.env.NEXT_PUBLIC_SITE_URL || ''].filter(Boolean),
-  csrf: [process.env.NEXT_PUBLIC_SITE_URL || ''].filter(Boolean),
+  cors: [process.env.NEXT_PUBLIC_CMS_URL].filter(Boolean) as string[],
+  csrf: [process.env.NEXT_PUBLIC_CMS_URL].filter(Boolean) as string[],
   db: dbAdapter,
   editor: getDefaultEditor(),
   email: emailAdapter,
@@ -159,21 +165,26 @@ const payloadConfig: Config = {
         },
       },
     }),
-    // redirectsPlugin({
-    //   collections: [Collection.Pages, Collection.Posts, Collection.Recipes, Collection.Products, Collection.Categories],
-    //   overrides: {
-    //     labels: CollectionLabel.Redirects,
-    //     admin: {
-    //       group: AdminPanelGroup.General,
-    //     },
-    //   },
-    //   redirectTypes: ['307', '308'],
-    // }),
-    // nestedDocsPlugin({
-    //   collections: [Collection.Categories, Collection.Pages],
-    //   generateLabel: (_, currentDoc) => currentDoc.title as string,
-    //   generateURL: (docs) => docs.reduce((url, doc) => `${url}/${(doc as any as Page | Post).slug}`, ''),
-    // }),
+    redirectsPlugin({
+      collections: [Collection.Pages, Collection.Posts],
+      overrides: {
+        labels: CollectionLabel.Redirects,
+        admin: {
+          group: AdminPanelGroup.General,
+        },
+      },
+      redirectTypes: ['307', '308'],
+    }),
+    nestedDocsPlugin({
+      collections: [Collection.Pages],
+      generateLabel: (_, currentDoc) => currentDoc.title as string,
+      generateURL: (docs) =>
+        docs.reduce(
+          (url, doc, idx) =>
+            `${idx || typeof (doc as unknown as Page).tenant !== 'object' ? '' : `/${(doc.tenant as unknown as Tenant).slug}`}${url}/${(doc as unknown as Page).slug}`,
+          '',
+        ),
+    }),
     // formBuilder({
     //   fields: {
     //     checkbox,
@@ -191,12 +202,12 @@ const payloadConfig: Config = {
     //     fields: [richTextHTMLConvertedField('confirmationMessage')],
     //   },
     // }),
-    // seoPlugin({
-    //   globals: [Global.Home],
-    //   collections: [Collection.Pages, Collection.Posts, Collection.Recipes, Collection.Categories, Collection.Products],
-    //   generateTitle,
-    //   uploadsCollection: Collection.OpenGraphImages,
-    // }),
+    seoPlugin({
+      globals: [Global.Home],
+      collections: [Collection.Pages, Collection.Posts],
+      generateTitle,
+      uploadsCollection: Collection.OpenGraphImages,
+    }),
   ],
   async onInit(payload) {
     if (isDev) {

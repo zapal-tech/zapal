@@ -20,7 +20,8 @@
         "tombonnike.vscode-status-bar-format-toggle",
         "svelte.svelte-vscode",
         "artdiniz.quitcontrol-vscode",
-        "vercel.turbo-vsc"
+        "vercel.turbo-vsc",
+        "antfu.unocss"
         // "mongodb.mongodb-vscode", // MongoDB
       ],
       "settings": {

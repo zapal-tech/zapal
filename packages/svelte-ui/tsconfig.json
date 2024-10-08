@@ -1,8 +1,0 @@
-{
-  "extends": "@zapal/dx/typescript/svelte",
-  "compilerOptions": {
-    "outDir": "dist"
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
-}

@@ -1,6 +1,7 @@
 import { FieldHook } from 'payload'
 
 import { Collection, UserRole } from '@zapal/shared/types'
+
 import { User } from '@cms/types/generated-types'
 
 // ensure the first user created is a root user

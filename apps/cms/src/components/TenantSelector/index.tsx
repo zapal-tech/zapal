@@ -1,4 +1,5 @@
 import { cookies as getCookies } from 'next/headers'
+
 import { tenantCookieName } from '@zapal/shared/cookies'
 
 import { TenantSelector } from './index.client'

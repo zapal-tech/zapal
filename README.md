@@ -11,7 +11,6 @@ This repo includes the following packages/apps:
   [Zapal](https://www.zapal.tech) websites
 - `@zapal/shared`: an internal shared library for shared code between apps/packages in this repo
 - `@zapal/svelte-ui`: a Svelte component library used for Zapal consistent UI on all our websites
-- `@zapal/cms-local-client`: a local client for the `cms` app to be used in the `web` app for fetching content
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 

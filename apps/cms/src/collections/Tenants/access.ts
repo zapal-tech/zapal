@@ -1,6 +1,7 @@
+import { Access } from 'payload'
+
 import { isRootUser } from '@cms/access'
 import { getTenantAccessIds, getTenantAdminTenantAccessIds } from '@cms/utils/getTenantAccessIds'
-import { Access } from 'payload'
 
 export const tenantAdmins: Access = ({ req: { user } }) => {
   if (!user) return false

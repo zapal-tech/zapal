@@ -2,13 +2,13 @@ import { CollectionConfig } from 'payload'
 
 import { AdminPanelGroup, Collection, CollectionLabel, UserRole, UserTenantRole } from '@zapal/shared/types'
 
+import { rootUsersFieldAccess } from '@cms/access'
 import { isNotDev } from '@cms/utils/env'
 
-import { ensureFirstUserIsRoot, virtualFullName } from './hooks'
 // import { welcomeEmail } from './hooks/welcomeEmail'
 
 import { createAccess, readAccess, updateAndDeleteAccess } from './access'
-import { rootUsersFieldAccess } from '@cms/access'
+import { ensureFirstUserIsRoot, virtualFullName } from './hooks'
 
 export const Users: CollectionConfig = {
   slug: Collection.Users,

@@ -1,20 +1,20 @@
 'use client'
 
-import { Option } from '@payloadcms/ui/elements/ReactSelect'
 import { getTranslation } from '@payloadcms/translations'
-import { OptionObject } from 'payload'
-
-import { getTenantAdminTenantAccessIds } from '@cms/utils/getTenantAccessIds'
 import { Popup, PopupList, useAuth, useTranslation } from '@payloadcms/ui'
+import { Option } from '@payloadcms/ui/elements/ReactSelect'
+import { OptionObject } from 'payload'
 import * as qs from 'qs-esm'
 import { useCallback, useEffect, useState } from 'react'
 
-import { UserRole } from '@zapal/shared/types'
-import { Tenant, User } from '@cms/types/generated-types'
-
 import { tenantCookieName } from '@zapal/shared/cookies'
+import { UserRole } from '@zapal/shared/types'
+
+import { Tenant, User } from '@cms/types/generated-types'
+import { getTenantAdminTenantAccessIds } from '@cms/utils/getTenantAccessIds'
 
 import './index.scss'
+
 import { TenantLabel } from './TenantLabel'
 
 export const TenantSelector = ({ initialCookie }: { initialCookie?: string }) => {

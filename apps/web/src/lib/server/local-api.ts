@@ -1,5 +1,5 @@
 // payload-client.ts
-import { type Payload, getPayload } from 'payload'
+import { getPayload, type Payload } from 'payload'
 
 let localApiInstance: Payload
 

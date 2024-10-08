@@ -1,9 +1,11 @@
-import { Collection } from '@zapal/shared/types'
 import { CollectionConfig } from 'payload'
 
-import { tenantAdmins, tenantMembersOrPublicTenant } from './access'
-import { virtualFullName } from './hooks'
+import { Collection } from '@zapal/shared/types'
+
 import { rootUsers } from '@cms/access'
+import { slug } from '@cms/fields'
+
+import { tenantAdmins, tenantMembersOrPublicTenant } from './access'
 
 export const Tenants: CollectionConfig = {
   slug: Collection.Tenants,
@@ -14,44 +16,27 @@ export const Tenants: CollectionConfig = {
     delete: rootUsers,
   },
   admin: {
-    useAsTitle: 'fullName',
-    defaultColumns: ['name', 'domain', 'public'],
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'slug', 'public'],
   },
   fields: [
     {
-      name: 'fullName',
-      label: {
-        en: 'Full name',
-        uk: 'Повна назва',
-      },
-      virtual: true,
-      type: 'text',
-      hooks: {
-        afterRead: [virtualFullName],
-      },
-      admin: {
-        hidden: true,
-      },
-    },
-    {
       name: 'name',
+      type: 'text',
       label: {
         en: 'Name',
         uk: 'Назва',
       },
-      type: 'text',
       required: true,
+      unique: true,
     },
-    {
-      name: 'domain',
-      label: {
-        en: 'Domain',
-        uk: 'Домен',
+    slug({
+      admin: {
+        description: `https://${process.env.NEXT_PUBLIC_GLOBAL_DOMAIN}/locale/slug/...`,
       },
-      type: 'text',
       required: true,
-      index: true,
-    },
+      unique: true,
+    }),
     {
       name: 'public',
       type: 'checkbox',

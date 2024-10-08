@@ -1,8 +1,9 @@
 'use client'
 
-import { Collection } from '@zapal/shared/types'
 import { RelationshipField, useField } from '@payloadcms/ui'
 import { useEffect, useRef } from 'react'
+
+import { Collection } from '@zapal/shared/types'
 
 type Props = {
   initialValue?: string

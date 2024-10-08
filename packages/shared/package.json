@@ -5,7 +5,6 @@
   "scripts": {},
   "devDependencies": {
     "@types/node": "catalog:",
-    "@zapal/dx": "catalog:",
     "typescript": "catalog:"
   }
 }

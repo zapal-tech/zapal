@@ -1,4 +1,5 @@
 import Link from 'next/link'
+
 import classes from './index.module.scss'
 
 export const Logo = () => (

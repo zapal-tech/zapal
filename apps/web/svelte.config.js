@@ -1,9 +1,7 @@
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import adapter from '@sveltejs/adapter-auto'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
-
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { dirname } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

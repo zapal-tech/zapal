@@ -1,7 +1,6 @@
 'use client'
 
 import { getTranslation } from '@payloadcms/translations'
-
 import { ChevronIcon, useTranslation } from '@payloadcms/ui'
 import { OptionObject } from 'payload'
 

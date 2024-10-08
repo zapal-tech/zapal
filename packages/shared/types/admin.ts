@@ -1,6 +1,5 @@
-import { Collection, Global } from './'
-
 import { Locale } from '../i18n'
+import { Collection, Global } from './'
 
 // TS Enum values must be of string or number type
 export const AdminPanelGroup: Record<'General' | 'Media' | 'Content', Record<Locale, string>> = {

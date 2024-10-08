@@ -1,5 +1,6 @@
-import { getTenantAccessIds } from '@cms/utils/getTenantAccessIds'
 import { FieldHook } from 'payload'
+
+import { getTenantAccessIds } from '@cms/utils/getTenantAccessIds'
 
 export const autofillTenant: FieldHook = ({ req: { user }, value }) => {
   // If there is no value,

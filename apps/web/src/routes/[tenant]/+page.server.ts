@@ -1,14 +1,18 @@
-import { initializeLocalApi, getLocalApiInstance } from '$lib/server/local-api'
 import { Collection } from '@zapal/shared/types'
 
-export async function load() {
+import { getLocalApiInstance, initializeLocalApi } from '$lib/server/local-api'
+
+export const load = async ({ params: { tenant } }) => {
   await initializeLocalApi()
+
   const localApi = await getLocalApiInstance()
 
-  const user = await localApi.findByID({
-    collection: Collection.Users,
-    id: 1,
-  })
+  const page = (
+    await localApi.find({
+      collection: Collection.Pages,
+      where: { slug: { equals: 'home' }, 'tenant.slug': { equals: tenant } },
+    })
+  ).docs[0]
 
-  return { msg: 'welcome', user }
+  return page
 }
