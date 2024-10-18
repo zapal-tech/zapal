@@ -4,19 +4,19 @@ packages:
 
 catalog:
   '@next/env': 3.0.0-canary.173
-  '@payloadcms/db-sqlite': 3.0.0-beta.111
-  '@payloadcms/email-nodemailer': 3.0.0-beta.111
-  '@payloadcms/next': 3.0.0-beta.111
-  '@payloadcms/plugin-nested-docs': 3.0.0-beta.111
-  '@payloadcms/plugin-redirects': 3.0.0-beta.111
-  '@payloadcms/plugin-seo': 3.0.0-beta.111
-  '@payloadcms/richtext-lexical': 3.0.0-beta.111
-  '@payloadcms/storage-s3': 3.0.0-beta.111
-  '@payloadcms/translations': 3.0.0-beta.111
-  '@payloadcms/ui': 3.0.0-beta.111
+  '@payloadcms/db-sqlite': 3.0.0-beta.116
+  '@payloadcms/email-nodemailer': 3.0.0-beta.116
+  '@payloadcms/next': 3.0.0-beta.116
+  '@payloadcms/plugin-nested-docs': 3.0.0-beta.116
+  '@payloadcms/plugin-redirects': 3.0.0-beta.116
+  '@payloadcms/plugin-seo': 3.0.0-beta.116
+  '@payloadcms/richtext-lexical': 3.0.0-beta.116
+  '@payloadcms/storage-s3': 3.0.0-beta.116
+  '@payloadcms/translations': 3.0.0-beta.116
+  '@payloadcms/ui': 3.0.0-beta.116
   '@playwright/test': ^1.28.1
   '@sveltejs/adapter-auto': ^3.2.5
-  '@sveltejs/kit': ^2.6.1
+  '@sveltejs/kit': ^2.6.4
   '@sveltejs/package': ^2.3.5
   '@sveltejs/vite-plugin-svelte': 4.0.0-next.7
   '@tailwindcss/vite': next
@@ -33,17 +33,17 @@ catalog:
   eslint: ^9.10.0
   husky: ^9.1.6
   next: 15.0.0-canary.173
-  payload: 3.0.0-beta.111
+  payload: 3.0.0-beta.116
   prettier: ^3
   qs-esm: ^7.0.2
   react: rc
   'react-dom': rc
   sharp: ^0.33.5
   svelte: next
-  svelte-check: ^4.0.2
+  svelte-check: ^4.0.4
   tailwindcss: next
   turbo: ^2.1.2
   typescript: ^5.6.2
   unocss: ^0.63.2
-  vite: ^5.4.5
+  vite: ^5.4.8
   vitest: ^2.1.1
