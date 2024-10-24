@@ -33,5 +33,5 @@ export const load = async ({ params }) => {
     })
   ).docs?.[0]
 
-  return { title: page?.title, tenant: tenantData ? tenantData.name : null, page }
+  return { title: page?.title, tenant: tenantData ? tenantData.name : '', page }
 }
