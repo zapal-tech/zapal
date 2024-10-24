@@ -3,10 +3,11 @@ import transliterateUkrainianToEnglish from 'ua-en-translit'
 
 import { cyrillicRegEx } from '@zapal/shared/regex'
 
-const formatTextToUrlSlug = (val: string): string =>
+export const formatTextToUrlSlug = (val: string): string =>
   val
     ?.replace(/ /g, '-')
     .replace(/[^\w-]+/g, '')
+    .replace(/(^[-_]*)|([-_]*$)/g, '')
     .toLowerCase()
     .trim()
 

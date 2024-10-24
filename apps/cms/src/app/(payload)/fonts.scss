@@ -33,3 +33,7 @@ button,
 span {
   font-family: var(--font-body);
 }
+
+:where([data-sonner-toaster]) {
+  font-family: var(--font-body) !important;
+}

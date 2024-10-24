@@ -1,8 +1,9 @@
 import { writeFile } from 'fs/promises'
 import { config } from 'dotenv'
+import { expand } from 'dotenv-expand'
 
 const loadLocalRootEnv = async () => {
-  const envConfig = config({ path: ['../../.env', '../../.env.local'] })
+  const envConfig = expand(config({ path: ['../../.env', '../../.env.local'] }))
 
   if (!envConfig.parsed || Object.keys(envConfig.parsed).length === 0)
     throw new Error('\n\n\nNo .env or .env.local found or it is empty\n\n\n')

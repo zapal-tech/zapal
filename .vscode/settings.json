@@ -13,6 +13,6 @@
       "mode": "auto"
     }
   ],
-  "cSpell.words": ["commitlint", "inlang", "Paraglide"],
+  "cSpell.words": ["clsx", "commitlint", "inlang", "Paraglide"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

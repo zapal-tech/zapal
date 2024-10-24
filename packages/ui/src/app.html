@@ -4,14 +4,19 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%sveltekit.assets%/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    %sveltekit.head%
 
     <style>
-      html,
       body {
         background: #000;
+        padding: 2rem;
       }
     </style>
+
+    %unocss-svelte-scoped.global%
+
+    <!-- Place other styles here that you want component based utility styles to be able to override as Svelte component styles will be placed at sveltekit's head tag below -->
+
+    %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">
     <div>%sveltekit.body%</div>

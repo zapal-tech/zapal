@@ -1,6 +1,7 @@
 import { existsSync, statSync } from 'fs'
 import { copyFile, writeFile } from 'fs/promises'
 import { config } from 'dotenv'
+import { expand } from 'dotenv-expand'
 
 const loadEnv = async () => {
   const DOTENV_KEY = process.env.DOTENV_KEY // Set this in hosting provider's environment variables
@@ -32,7 +33,7 @@ const loadEnv = async () => {
     console.error('Failed to copy .env.vault to local dir', error, '\n')
   }
 
-  const envConfig = config({ DOTENV_KEY }) // If DOTENV_KEY found, get the .env.vault, load it to get shared env variables
+  const envConfig = expand(config({ DOTENV_KEY })) // If DOTENV_KEY found, get the .env.vault, load it to get shared env variables
 
   if (!envConfig.parsed || Object.keys(envConfig.parsed).length === 0)
     throw new Error('\n\n\nNo .env.vault found or it is empty\n\n\n')

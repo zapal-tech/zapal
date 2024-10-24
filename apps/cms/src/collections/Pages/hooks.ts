@@ -14,16 +14,18 @@ export const ensureUniqueSlug: FieldHook = async ({
   },
   value,
 }) => {
-  const incomingParentId = typeof data?.parent === 'object' ? data.parent.id : data?.parent
-  const currentParentId = typeof originalDoc?.parent === 'object' ? originalDoc.parent.id : originalDoc?.parent
+  const incomingParentId = data?.parent && typeof data?.parent === 'object' ? data.parent.id : data?.parent
+  const currentParentId =
+    originalDoc?.parent && typeof originalDoc?.parent === 'object' ? originalDoc.parent.id : originalDoc?.parent
 
-  const incomingTenantId = typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant
-  const currentTenantId = typeof originalDoc?.tenant === 'object' ? originalDoc.tenant.id : originalDoc?.tenant
+  const incomingTenantId = data?.tenant && typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant
+  const currentTenantId =
+    originalDoc?.tenant && typeof originalDoc?.tenant === 'object' ? originalDoc.tenant.id : originalDoc?.tenant
 
   if (originalDoc.slug === value && incomingParentId === currentParentId && incomingTenantId === currentTenantId) return value
 
   const tenantIdToMatch = incomingTenantId || currentTenantId
-  const parentIdToMatch = (typeof data?.parent === 'object' ? data.parent.id : data?.parent) || null
+  const parentIdToMatch = (data?.parent && typeof data.parent === 'object' ? data.parent.id : data?.parent) || null
 
   const foundDuplicatePages = await payload.find({
     collection: Collection.Pages,

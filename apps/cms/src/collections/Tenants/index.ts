@@ -31,11 +31,16 @@ export const Tenants: CollectionConfig = {
       unique: true,
     },
     slug({
-      admin: {
-        description: `https://${process.env.NEXT_PUBLIC_GLOBAL_DOMAIN}/locale/slug/...`,
-      },
       required: true,
       unique: true,
+      admin: {
+        components: {
+          Description: {
+            path: '@cms/collections/Tenants/fields/TenantUrlPreview',
+            exportName: 'TenantUrlPreview',
+          },
+        },
+      },
     }),
     {
       name: 'public',

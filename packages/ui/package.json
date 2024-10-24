@@ -29,6 +29,9 @@
     "test:integration": "playwright test",
     "test:unit": "vitest"
   },
+  "dependencies": {
+    "clsx": "^2.1.1"
+  },
   "devDependencies": {
     "@playwright/test": "catalog:",
     "@sveltejs/adapter-auto": "catalog:",
